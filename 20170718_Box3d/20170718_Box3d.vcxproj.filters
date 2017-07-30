@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="GameFramework">
+      <UniqueIdentifier>{baab75f8-bf0b-4844-ae54-24ad738af390}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameLoop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\AnimationManager.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\BackgroundIface.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\BitmapImage.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\Button.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\CameraIface.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\CameraManager.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\ClockManager.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\CollisionCheckFunc.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\FixedCamera.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\GameNode.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\GameObject.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\Line2D.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\ListBox.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\MathUtils.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\PlayerCamera.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\SceneManager.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\ScrollBackground.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\Slider.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\SoundManager.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\Sprite.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\SpriteManager.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\SpritesAnimation.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\Stdafx.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\TextUI.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\ToggleButton.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\UIBase.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\Utils.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\WorldClock.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework\EffectManager.cpp">
+      <Filter>GameFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="cVector3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cVector4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cMatrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInputs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameLoop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\AnimationManager.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\BackgroundIface.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\BitmapImage.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\Button.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\CameraIface.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\CameraManager.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\ClockManager.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\CollisionCheckFunc.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\CommonMacroHeader.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\DoubleBuffering.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\FixedCamera.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\GameNode.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\GameObject.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\json.hpp">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\KeyManager.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\Line2D.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\ListBox.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\MathUtils.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\PlayerCamera.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\RandomFunction.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\SceneManager.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\ScrollBackground.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\SingletonBase.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\Slider.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\SoundManager.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\Sprite.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\SpriteIface.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\SpriteManager.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\SpritesAnimation.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\Stdafx.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\TextUI.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\ToggleButton.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\UIBase.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\Utils.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\WorldClock.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\EffectManager.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="cVector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cVector4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework\tstring.h">
+      <Filter>GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInputs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

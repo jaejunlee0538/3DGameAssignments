@@ -7,6 +7,8 @@ namespace SGA {
 		if (material) {
 			device->SetMaterial(material.get());
 			device->SetTexture(0, texture.lock().get());
+			//device->SetTexture(0, NULL);
+
 			device->SetFVF(VertexPosNormTex::FVF);
 			device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, vertices.size() / 3, vertices.data(), sizeof(VertexPosNormTex));
 		}

@@ -168,10 +168,10 @@ namespace SGA {
 		loadedObject->update(false);
 
 		//////////////////////태양 회전///////////////////////////////
-		//D3DXMATRIX tmp;
-		//D3DXVec3TransformNormal(&m_sunDir, &m_sunDir, D3DXMatrixRotationY(&tmp, 0.05));
-		//m_lightSun.Direction = m_sunDir;
-		//m_pD3DDevice->SetLight(0, &m_lightSun);
+		D3DXMATRIX tmp;
+		D3DXVec3TransformNormal(&m_sunDir, &m_sunDir, D3DXMatrixRotationY(&tmp, 0.05));
+		m_lightSun.Direction = m_sunDir;
+		m_pD3DDevice->SetLight(0, &m_lightSun);
 		/////////////////////////////////////////////////////
 	}
 
@@ -184,7 +184,7 @@ namespace SGA {
 			1.0f, 0);
 
 		m_pD3DDevice->BeginScene();
-		_grid.render();
+		//_grid.render();
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 		m_pD3DDevice->SetTransform(D3DTS_WORLD, &Identity4X4);
 		m_pD3DDevice->DrawPrimitiveUP(D3DPT_LINESTRIP, 6, _hexagon.data(), sizeof(VertexPosDiff));

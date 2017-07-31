@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GameObject.h"
-
+#include <algorithm>
 namespace SGA {
 	GameObject::GameObject()
 	{
@@ -17,10 +17,9 @@ namespace SGA {
 
 	void GameObject::render() const
 	{
-		GameObject* child = _headChilds;
-		while (child) {
-			child->render();
-			child = child->_nextSibling;
+		//모든 자식을 그린다.
+		for each(auto pChild in _childs) {
+			pChild->render();
 		}
 	}
 
@@ -32,10 +31,9 @@ namespace SGA {
 			_isDirty = false;
 		}
 
-		GameObject* child = _headChilds;
-		while (child) {
-			child->update(isDirty);
-			child = child->_nextSibling;
+		//모든 자식을 업데이트한다.
+		for each(auto pChild in _childs) {
+			pChild->update(isDirty);
 		}
 	}
 
@@ -82,10 +80,8 @@ namespace SGA {
 		if (it != animMatrices.end()) {
 			setAnimationMatrix(it->second);
 		}
-		GameObject* child = _headChilds;
-		while (child) {
-			child->setKeyFrameAnimation(animMatrices);
-			child = child->_nextSibling;
+		for each(auto pChild in _childs) {
+			pChild->setKeyFrameAnimation(animMatrices);
 		}
 	}
 
@@ -98,10 +94,8 @@ namespace SGA {
 	size_t GameObject::getNObjects() const
 	{
 		size_t count = 1;
-		GameObject* child = _headChilds;
-		while (child) {
-			count += child->getNObjects();
-			child = child->_nextSibling;
+		for each(auto pChild in _childs) {
+			count += pChild->getNObjects();
 		}
 		return count;
 	}
@@ -113,16 +107,14 @@ namespace SGA {
 
 	bool GameObject::hasChild() const
 	{
-		return _headChilds != nullptr;
+		return _childs.empty() == false;
 	}
 
 	void GameObject::insertChild(GameObject * child)
 	{
 		assert(child != nullptr);
 		//head에 새로운 자식을 삽입한다.
-		GameObject* tmp = _headChilds;
-		_headChilds = child;
-		_headChilds->_nextSibling = tmp;
+		_childs.push_front(child);
 		child->_isDirty = true;
 		child->_parent = this;
 	}
@@ -132,82 +124,48 @@ namespace SGA {
 		if (_tag.compare(tag) == 0) {
 			return this;
 		}
-		GameObject* child = _headChilds;
-		while (child) {
-			GameObject* obj = child->findObject(tag);
+		for each(auto pChild in _childs) {
+			GameObject* obj = pChild->findObject(tag);
 			if (obj) return obj;
-			child = child->_nextSibling; //
 		}
 		return nullptr;
 	}
 
 	GameObject * GameObject::removeObject(const char * tag)
 	{
-		GameObject* child = _headChilds;
-		GameObject* prevChild = nullptr;
-		while (child) {
-			if (child->isTagSame(tag)) {
-				//현재 자식이 tag를 가진 오브젝트면 현재 자식을 연결리스트에서 제거한다.
-				if (child == _headChilds) {
-					_headChilds = child->_nextSibling;
-				}
-				else {
-					prevChild->_nextSibling = child->_nextSibling;
-				}
-				child->_parent = nullptr;
-				child->_nextSibling = nullptr;
-				return child;
-			}
-
-			//현재 자식의 자식들 중에 tag를 가진 오브젝트를 찾아서 제거한다.
-			GameObject* obj = child->removeObject(tag);
+		auto it = std::find_if(_childs.begin(), _childs.end(), [&tag](GameObject* obj) {return obj->isTagSame(tag); });
+		if (it != _childs.end()) {
+			_childs.erase(it);
+			return *it;
+		}
+		for each(auto pChild in _childs) {
+			GameObject* obj = pChild->removeObject(tag);
 			if (obj) return obj;
-
-			//다음 자식
-			child = child->_nextSibling;
 		}
 		return nullptr;
 	}
 
 	bool GameObject::deleteObject(const char * tag)
 	{
-		GameObject* child = _headChilds;
-		GameObject* prevChild = nullptr;
-		while (child) {
-			if (child->isTagSame(tag)) {
-				//현재 자식이 tag를 가진 오브젝트면 현재 자식을 연결리스트에서 제거한다.
-				if (child == _headChilds) {
-					_headChilds = child->_nextSibling;
-				}
-				else {
-					prevChild->_nextSibling = child->_nextSibling;
-				}
-				//현재 자식을 메모리에서 삭제한다.
-				delete child;
-				return true;
-			}
-
-			//현재 자식의 자식들 중에 tag를 가진 오브젝트를 찾아서 제거한다.
-			if (child->removeObject(tag)) return true;
-
-			//다음 자식
-			child = child->_nextSibling;
+		auto it = std::find_if(_childs.begin(), _childs.end(), [&tag](GameObject* obj) {return obj->isTagSame(tag); });
+		if (it != _childs.end()) {
+			_childs.erase(it);
+			delete *it;
+			return true;
+		}
+		for each(auto pChild in _childs) {
+			if (pChild->deleteObject(tag)) return true;
 		}
 		return false;
 	}
 
 	void GameObject::clearChilds()
 	{
-		if (_headChilds) {
-			GameObject* child = _headChilds;
-			while (child) {
-				child->clearChilds();
-				GameObject* tmp = child->_nextSibling;
-				delete child;
-				child = tmp;
-			}
-			_headChilds = nullptr;
+		for each(auto pChild in _childs) {
+			pChild->clearChilds();
+			delete pChild;
 		}
+		_childs.clear();
 	}
 
 	void GameObject::setPosition(float x, float y, float z)

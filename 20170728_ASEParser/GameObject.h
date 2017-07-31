@@ -49,8 +49,9 @@ namespace SGA {
 		void clearChilds();
 	private:
 		GameObject* _parent = nullptr;
-		GameObject* _headChilds = nullptr;
-		GameObject* _nextSibling = nullptr;
+		//GameObject* _headChilds = nullptr;
+		//GameObject* _nextSibling = nullptr;
+		std::list<GameObject*> _childs;
 		
 		std::string _tag;
 

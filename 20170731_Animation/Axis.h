@@ -1,0 +1,15 @@
+#pragma once
+#include "GameObject.h"
+namespace SGA {
+	class Axis : public GameObject
+	{
+	public:
+		Axis(float scale=1.0f);
+		~Axis();
+		void init(float scale);
+		void render() const override;
+
+	private:
+		VertexPosDiff _pts[6];
+	};
+}

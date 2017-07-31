@@ -47,6 +47,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "20170728_ASEParser", "20170
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "20170730_MyGameFramework", "20170730_MyGameFramework\20170730_MyGameFramework.vcxproj", "{D011736F-4A76-4F9A-A1BC-81C2C4DDF12B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "20170731_Animation", "20170731_Animation\20170731_Animation.vcxproj", "{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -231,6 +233,14 @@ Global
 		{D011736F-4A76-4F9A-A1BC-81C2C4DDF12B}.Release|x64.Build.0 = Release|x64
 		{D011736F-4A76-4F9A-A1BC-81C2C4DDF12B}.Release|x86.ActiveCfg = Release|Win32
 		{D011736F-4A76-4F9A-A1BC-81C2C4DDF12B}.Release|x86.Build.0 = Release|Win32
+		{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}.Debug|x64.ActiveCfg = Debug|x64
+		{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}.Debug|x64.Build.0 = Debug|x64
+		{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}.Debug|x86.ActiveCfg = Debug|Win32
+		{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}.Debug|x86.Build.0 = Debug|Win32
+		{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}.Release|x64.ActiveCfg = Release|x64
+		{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}.Release|x64.Build.0 = Release|x64
+		{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}.Release|x86.ActiveCfg = Release|Win32
+		{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

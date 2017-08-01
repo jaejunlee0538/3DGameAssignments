@@ -39,6 +39,21 @@ namespace SGA {
 		return endTime;
 	}
 
+	size_t BoneAnimation::getNFramesRotation() const
+	{
+		return framesRotation.size();
+	}
+
+	size_t BoneAnimation::getNFramesTranslation() const
+	{
+		return framesTranslation.size();
+	}
+
+	size_t BoneAnimation::getNFramesScale() const
+	{
+		return framesScale.size();
+	}
+
 	void BoneAnimation::insertRotationQuaternion(float t, const D3DXQUATERNION & rotation)
 	{
 		framesRotation.emplace_back(t, rotation);
@@ -74,6 +89,15 @@ namespace SGA {
 		D3DXMatrixTranslation(&matTrans, translation.x, translation.y, translation.z);
 		D3DXMatrixScaling(&matScale, scale.x, scale.y, scale.z);
 		transform = matScale * matRot * matTrans;
+	}
+
+	void BoneAnimation::interpolate(float t, KeyFrame & keyFrame) const
+	{
+		keyFrame.isValidRot = getNFramesRotation() > 0;
+		keyFrame.isValidPos = getNFramesTranslation() > 0;
+		keyFrame.isValidScale = getNFramesScale() > 0;
+		interpolate(t, keyFrame.rot, keyFrame.pos, keyFrame.scale);
+		keyFrame.time = t;
 	}
 
 	void BoneAnimation::interpolateRotation(float t, D3DXQUATERNION & rotation) const
@@ -179,12 +203,12 @@ namespace SGA {
 		return phase;
 	}
 
-	void AnimationClip::interpolate(float t, KeyFrameSnapshot& bonesTransform) const
+	void AnimationClip::interpolate(float t, AnimationSnapshots& bonesTransform) const
 	{
-		D3DXMATRIX mat;
+		KeyFrame keyFrame;
 		for (auto it = boneAnimations.begin(); it != boneAnimations.end(); ++it) {
-			it->interpolate(t, mat);
-			bonesTransform[it->getBoneName()] = mat;
+			it->interpolate(t, keyFrame);
+			bonesTransform[it->getBoneName()] = keyFrame;
 		}
 	}
 }

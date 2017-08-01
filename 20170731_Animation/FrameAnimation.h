@@ -1,8 +1,32 @@
 #pragma once
 
 namespace SGA {
-	typedef std::map<std::string, D3DXMATRIX> KeyFrameSnapshot;
-	
+	class BoneAnimation;
+	class KeyFrame {
+	public:
+		float time;
+		D3DXVECTOR3 scale;
+		D3DXVECTOR3 pos;
+		D3DXQUATERNION rot;
+
+		bool hasScale() const {
+			return isValidScale;
+		}
+		bool hasPosition() const {
+			return isValidPos;
+		}
+		bool hasRotation() const {
+			return isValidRot;
+		}
+	private:
+		bool isValidScale;
+		bool isValidPos;
+		bool isValidRot;
+		friend class BoneAnimation;
+	};
+
+	typedef std::map<std::string, KeyFrame> AnimationSnapshots;
+
 	struct KeyFrameRotation {
 		float time;
 		D3DXQUATERNION quat;
@@ -61,12 +85,17 @@ namespace SGA {
 		std::vector<KeyFrameTranslation>& getFramesTranslation() { return framesTranslation; }
 		std::vector<KeyFrameScale>& getFramesScale() { return framesScale; }
 
+		size_t getNFramesRotation() const;
+		size_t getNFramesTranslation() const;
+		size_t getNFramesScale() const;
+
 		void insertRotationQuaternion(float t, const D3DXQUATERNION& rotation);
 		void insertRotationAxisAngle(float t, const D3DXVECTOR3& axis, float rotAngle);
 		void insertTranslation(float t, const D3DXVECTOR3& translation);
 
 		void interpolate(float t, D3DXQUATERNION& rotation, D3DXVECTOR3& translation, D3DXVECTOR3& scale) const;
 		void interpolate(float t, D3DXMATRIX& transform) const;
+		void interpolate(float t, KeyFrame& keyFrame) const;
 	protected:
 		void interpolateRotation(float t, D3DXQUATERNION& rotation) const;
 		void interpolateTranslation(float t, D3DXVECTOR3& translation) const;
@@ -114,7 +143,7 @@ namespace SGA {
 		float getClipStartTime() const;
 		float getClipEndtime() const;
 		float calculatePhase(float t) const;
-		void interpolate(float t, KeyFrameSnapshot& bonesTransform) const;
+		void interpolate(float t, AnimationSnapshots& bonesTransform) const;
 
 		std::vector<BoneAnimation> boneAnimations;
 	};

@@ -4,6 +4,7 @@
 
 namespace SGA {
 	MeshObject::MeshObject()
+		:_mesh(NULL)
 	{
 	}
 
@@ -15,7 +16,9 @@ namespace SGA {
 	void MeshObject::render() const
 	{
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &getWorldMatrix());
-		_mesh->render(g_pD3DDevice);
+		if (_mesh) {
+			_mesh->render(g_pD3DDevice);
+		}
 		GameObject::render();
 	}
 

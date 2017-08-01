@@ -13,7 +13,7 @@ namespace SGA {
 		void update(bool isDirty = false) override;
 		void init(MeshModel* mesh);
 	private:
-		MeshModel* _mesh = nullptr;
+		MeshModel* _mesh;
 	};
 
 }

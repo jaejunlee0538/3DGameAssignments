@@ -17,12 +17,7 @@ namespace SGA {
 		D3DLIGHT9 m_lightSun;
 		D3DXVECTOR3 m_sunDir;
 
-
-		std::vector<VertexPosDiff> _hexagon;
-		BezierCurve _bezierCurve[3];
-		BezierCurve _linearCurve;
-
-		ASEParser _aseParser;
+	
 
 		MeshObject* loadedObject;
 		AnimationClip *_animationClip;
@@ -30,6 +25,9 @@ namespace SGA {
 		Grid _grid;
 
 		float _time;
+
+		int _startFrame, _endFrame;
+		double _timeScale;
 	public:
 		cMainGame();
 		~cMainGame();

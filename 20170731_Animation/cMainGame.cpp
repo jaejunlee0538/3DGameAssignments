@@ -75,47 +75,23 @@ namespace SGA {
 		m_pD3DDevice->LightEnable(0, true);
 
 		_grid.init(30, 30, 1, 1);
-		
-		_bezierCurve[0].setMode(BezierCurve::INTERPOLATE_BEZIER);
-		_bezierCurve[1].setMode(BezierCurve::INTERPOLATE_BEZIER);
-		_bezierCurve[2].setMode(BezierCurve::INTERPOLATE_BEZIER);
 
-		_linearCurve.setMode(BezierCurve::INTERPOLATE_LINEAR);
-
-		for (int i = 0; i < 6; ++i) {
-			float x, z;
-			float angle = D3DXToRadian(i * 60);
-			x = 10.0f * cosf(angle);
-			z = 10.0f * sinf(angle);
-			_hexagon.push_back(VertexPosDiff(x, 0, z, D3DCOLOR_XRGB(255, 0, 0)));
-		}
-		_hexagon.push_back(VertexPosDiff(10, 0, 0, D3DCOLOR_XRGB(255, 0, 0)));
-		_bezierCurve[0].pushBackPoint(_hexagon[0].p.x, 0, _hexagon[0].p.z);
-		_bezierCurve[0].pushBackPoint(_hexagon[1].p.x, 0, _hexagon[1].p.z);
-		_bezierCurve[0].pushBackPoint(_hexagon[2].p.x, 0, _hexagon[2].p.z);
-		_bezierCurve[1].pushBackPoint(_hexagon[2].p.x, 0, _hexagon[2].p.z);
-		_bezierCurve[1].pushBackPoint(_hexagon[3].p.x, 0, _hexagon[3].p.z);
-		_bezierCurve[1].pushBackPoint(_hexagon[4].p.x, 0, _hexagon[4].p.z);
-		_bezierCurve[2].pushBackPoint(_hexagon[4].p.x, 0, _hexagon[4].p.z);
-		_bezierCurve[2].pushBackPoint(_hexagon[5].p.x, 0, _hexagon[5].p.z);
-		_bezierCurve[2].pushBackPoint(_hexagon[0].p.x, 0, _hexagon[0].p.z);
-		_linearCurve.pushBackPoint(_hexagon[0].p.x, 0, _hexagon[0].p.z);
-		_linearCurve.pushBackPoint(_hexagon[1].p.x, 0, _hexagon[1].p.z);
-		_linearCurve.pushBackPoint(_hexagon[2].p.x, 0, _hexagon[2].p.z);
-		_linearCurve.pushBackPoint(_hexagon[3].p.x, 0, _hexagon[3].p.z);
-		_linearCurve.pushBackPoint(_hexagon[4].p.x, 0, _hexagon[4].p.z);
-		_linearCurve.pushBackPoint(_hexagon[5].p.x, 0, _hexagon[5].p.z);
-		_linearCurve.pushBackPoint(_hexagon[0].p.x, 0, _hexagon[0].p.z);
-
-		_aseParser.load("woman/woman_01_all.ASE", &loadedObject, &_animationClip);
+		ASEParser aseParser;
+		aseParser.load("woman/woman_01_all.ASE", &loadedObject, &_animationClip);
+		_timeScale = (aseParser._tickPerFrame * aseParser._frameSpeed) / 1000.0f;
+		_startFrame = aseParser._firstFrame * aseParser._tickPerFrame;
+		_endFrame = aseParser._lastFrame * aseParser._tickPerFrame;
 		//loadedObject->insertChild(new Axis(1.f));
-		loadedObject->insertChild("shoe01", new Axis(0.5f));
+		//loadedObject->insertChild("shoe01", new Axis(0.5f));
+		auto* tmp = loadedObject;
+		loadedObject = new MeshObject();
+		loadedObject->insertChild(tmp);
 		loadedObject->translate(2, 0, 2);
 	}
 
 	void cMainGame::Update()
 	{
-		int tickCount = 640 + (GetTickCount() % (3200 - 640));
+		int tickCount = _startFrame + (static_cast<DWORD>(_timeScale*GetTickCount()) % (_endFrame - _startFrame));
 		
 		auto input = InputManager::getSingleton()->GenerateUserInput();
 		m_camera.Update(input);
@@ -128,23 +104,7 @@ namespace SGA {
 			loadedObject->rotateLocal(0.05, 0, 0);
 		}
 
-		D3DXVECTOR3 pos;
-		D3DXVECTOR3 dirBezier;
-		if (_time < CHARACTER_RUN_TIME / 3) {
-			pos = _bezierCurve[0].computeFromTime(CHARACTER_RUN_TIME/3, _time);
-			dirBezier = _bezierCurve[0].getCurrentDirection();
-		}
-		else if (_time < 2*CHARACTER_RUN_TIME / 3) {
-			pos = _bezierCurve[1].computeFromTime(CHARACTER_RUN_TIME/3, _time- CHARACTER_RUN_TIME / 3);
-			dirBezier = _bezierCurve[1].getCurrentDirection();
-		}
-		else {
-			pos = _bezierCurve[2].computeFromTime(CHARACTER_RUN_TIME/3, _time-2* CHARACTER_RUN_TIME / 3);
-			dirBezier = _bezierCurve[2].getCurrentDirection();
-		}
-		auto pos2 = _linearCurve.computeFromTime(CHARACTER_RUN_TIME, _time);
-
-		KeyFrameSnapshot animSnapshot;
+		AnimationSnapshots animSnapshot;
 		_animationClip->interpolate(tickCount, animSnapshot);
 		loadedObject->setKeyFrameAnimation(animSnapshot);
 		loadedObject->update(false);
@@ -168,10 +128,6 @@ namespace SGA {
 
 		m_pD3DDevice->BeginScene();
 		_grid.render();
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-		m_pD3DDevice->SetTransform(D3DTS_WORLD, &Identity4X4);
-		m_pD3DDevice->DrawPrimitiveUP(D3DPT_LINESTRIP, 6, _hexagon.data(), sizeof(VertexPosDiff));
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 		loadedObject->render();
 		m_pD3DDevice->EndScene();

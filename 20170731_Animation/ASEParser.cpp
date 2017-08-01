@@ -20,6 +20,13 @@ namespace SGA {
 
 	void ASEParser::load(const char * filePath, MeshObject** object, AnimationClip** animationClip)
 	{
+		_mtlLib.clear();
+		_vertices.clear();
+		_uv.clear();
+		_faces.clear();
+		_gameObjects.clear();
+		_objectTransforms.clear();
+
 		errno_t err = fopen_s(&_file, filePath, "r");
 		if (err != 0) {
 			throw ResourceFileMissing(filePath);
@@ -40,7 +47,9 @@ namespace SGA {
 				MeshObject * object = new MeshObject();
 				BoneAnimation boneAnimation;
 				parseGeomObject(*object, boneAnimation);
-				animClip->boneAnimations.push_back(boneAnimation);
+				if (boneAnimation.getBoneName().empty() == false) {
+					animClip->boneAnimations.push_back(boneAnimation);
+				}
 				insertObject(object->getTag(), object);
 			}
 			else {
@@ -48,7 +57,7 @@ namespace SGA {
 			}
 		}
 		fclose(_file);
-		
+
 		*object = nullptr;
 		for (auto it = _gameObjects.begin(); it != _gameObjects.end(); ++it) {
 			if (it->second->hasParent() == false) {
@@ -57,6 +66,8 @@ namespace SGA {
 			}
 		}
 		*animationClip = animClip;
+
+
 	}
 
 	bool ASEParser::isClosingBracket(const char * str)
@@ -67,9 +78,28 @@ namespace SGA {
 	void ASEParser::parseScene()
 	{
 		while (!feof(_file)) {
-			fgets(_buffer, STR_BUF_SIZE, _file);
+			fscanf_s(_file, "%s", &_buffer, BUFFER_SIZE);
 			if (isClosingBracket((_buffer))) {
 				break;
+			}
+			if (!strcmp(_buffer, "*SCENE_FIRSTFRAME")) {
+				fgets(_buffer, BUFFER_SIZE, _file);
+				sscanf_s(_buffer, "%d", &_firstFrame);
+			}
+			else if (!strcmp(_buffer, "*SCENE_LASTFRAME")) {
+				fgets(_buffer, BUFFER_SIZE, _file);
+				sscanf_s(_buffer, "%d", &_lastFrame);
+			}
+			else if (!strcmp(_buffer, "*SCENE_FRAMESPEED")) {
+				fgets(_buffer, BUFFER_SIZE, _file);
+				sscanf_s(_buffer, "%d", &_frameSpeed);
+			}
+			else if (!strcmp(_buffer, "*SCENE_TICKSPERFRAME")) {
+				fgets(_buffer, BUFFER_SIZE, _file);
+				sscanf_s(_buffer, "%d", &_tickPerFrame);
+			}
+			else {
+				nextLine();
 			}
 		}
 	}
@@ -545,15 +575,11 @@ namespace SGA {
 				assert(false);
 			}
 		}
+		assert(animation.getBoneName().empty() == false);
 	}
 
 	void ASEParser::parsePosTrack(BoneAnimation& animation, MeshObject& object)
 	{
-		D3DXMATRIX worldInv = Identity4X4;
-		if (object.hasParent()) {
-			getLocalTransform(object.getTag(), object.getParent()->getTag(), worldInv);
-		}
-	
 		while (!feof(_file)) {
 			fscanf_s(_file, "%s", _buffer, BUFFER_SIZE);
 			if (isClosingBracket(_buffer)) {
@@ -564,7 +590,6 @@ namespace SGA {
 				int time;
 				D3DXVECTOR3 pos;
 				sscanf_s(_buffer, "%d %f %f %f", &time, &pos.x, &pos.z, &pos.y);
-				D3DXVec3TransformCoord(&pos, &pos, &worldInv);
 				animation.insertTranslation(time, pos);
 			}
 			else {
@@ -575,13 +600,6 @@ namespace SGA {
 
 	void ASEParser::parseRotTrack(BoneAnimation& animation, MeshObject& object)
 	{
-		D3DXMATRIX worldInv = Identity4X4;
-		if (object.hasParent()) {
-			getLocalTransform(object.getTag() , object.getParent()->getTag(), worldInv);
-		}
-
-		D3DXQUATERNION quatInvWorld;
-		D3DXQuaternionRotationMatrix(&quatInvWorld, &worldInv);
 		D3DXQUATERNION quat;
 		bool firstRotation = true;
 		while (!feof(_file)) {
@@ -598,14 +616,13 @@ namespace SGA {
 				if (firstRotation) {
 					D3DXQuaternionRotationAxis(&quat, &axis, angle);
 					firstRotation = false;
-					animation.insertRotationQuaternion(time, quat*quatInvWorld);
 				}
 				else {
 					D3DXQUATERNION quatIncrement;
 					D3DXQuaternionRotationAxis(&quatIncrement, &axis, angle);
-					quat = quatIncrement * quat;
-					animation.insertRotationQuaternion(time, quat*quatInvWorld);
+					quat = quat * quatIncrement;
 				}
+				animation.insertRotationQuaternion(time, quat);
 			}
 			else {
 				assert(false);
@@ -642,6 +659,7 @@ namespace SGA {
 		char buffer[STR_BUF_SIZE];
 		fgets(buffer, STR_BUF_SIZE, _file);
 	}
+
 	void ASEParser::getLocalTransform(std::string objFrom, std::string objTo, D3DXMATRIX & transform)
 	{
 		D3DXMATRIX tmp = _objectTransforms[objFrom];

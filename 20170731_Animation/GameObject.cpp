@@ -57,13 +57,18 @@ namespace SGA {
 		D3DXMatrixScaling(&_matScale, sx, sy, sz);
 	}
 
+	void GameObject::setScale(const D3DXVECTOR3 & scale)
+	{
+		setScale(scale.x, scale.y, scale.z);
+	}
+
 	void GameObject::calculateWorldMatrix()
 	{
 		D3DXMATRIX matRot;
 		D3DXMATRIX matTranslation;
 		D3DXMatrixTranslation(&matTranslation, _position.x, _position.y, _position.z);
 		D3DXMatrixRotationQuaternion(&matRot, &_quaternion);
-		_matWorld = matRot * _matAnim * matTranslation;
+		_matWorld = matRot *  matTranslation;
 		
 		if (_parent) {
 			//부모가 있는 경우 부모의 world행렬을 곱한다.
@@ -74,21 +79,20 @@ namespace SGA {
 		}
 	}
 
-	void GameObject::setKeyFrameAnimation(const KeyFrameSnapshot & animMatrices)
+	void GameObject::setKeyFrameAnimation(const AnimationSnapshots & animMatrices)
 	{
 		auto it = animMatrices.find(_tag);
 		if (it != animMatrices.end()) {
-			setAnimationMatrix(it->second);
+			if(it->second.hasScale())  
+				setScale(it->second.scale);
+			if(it->second.hasPosition()) 
+				setPosition(it->second.pos);
+			if(it->second.hasRotation()) 
+				setRotation(it->second.rot);
 		}
 		for each(auto pChild in _childs) {
 			pChild->setKeyFrameAnimation(animMatrices);
 		}
-	}
-
-	void GameObject::setAnimationMatrix(const D3DXMATRIX & matAnim)
-	{
-		_matAnim = matAnim;
-		_isDirty = true;
 	}
 
 	size_t GameObject::getNObjects() const
@@ -185,6 +189,11 @@ namespace SGA {
 		_isDirty = true;
 	}
 
+	void GameObject::setPosition(const D3DXVECTOR3 & pos)
+	{
+		setPosition(pos.x, pos.y, pos.z);
+	}
+
 	void GameObject::setRotation(float angleX, float angleY, float angleZ)
 	{
 		D3DXQuaternionRotationYawPitchRoll(&_quaternion, angleY, angleX, angleZ);
@@ -193,9 +202,14 @@ namespace SGA {
 
 	void GameObject::setRotation(const D3DXVECTOR3 & axis, float angle)
 	{
-		D3DXMATRIX rotMat;
-		D3DXMatrixRotationAxis(&rotMat, &axis, angle);
-		assert(false);
+		D3DXQuaternionRotationAxis(&_quaternion, &axis, angle);
+		_isDirty = true;
+	}
+
+	void GameObject::setRotation(const D3DXQUATERNION & quat)
+	{
+		_quaternion = quat;
+		_isDirty = true;
 	}
 
 	void GameObject::setTransform(const D3DXMATRIX * transform)
@@ -205,6 +219,18 @@ namespace SGA {
 		_position.z = (*transform)(3,2);
 		D3DXQuaternionRotationMatrix(&_quaternion, transform);
 		_isDirty = true;
+	}
+
+	D3DXVECTOR3 GameObject::getWorldPosition() const
+	{
+		return D3DXVECTOR3(_matWorld(3,0),_matWorld(3,1),_matWorld(3,2));
+	}
+
+	D3DXQUATERNION GameObject::getWorldRotation() const
+	{
+		D3DXQUATERNION quat;
+		D3DXQuaternionRotationMatrix(&quat, &_matWorld);
+		return quat;
 	}
 
 	void GameObject::translate(float dx, float dy, float dz)

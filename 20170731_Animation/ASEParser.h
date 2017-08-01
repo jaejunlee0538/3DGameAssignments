@@ -28,6 +28,12 @@ namespace SGA {
 		~ASEParser();
 
 		void load(const char* filePath, MeshObject** object, AnimationClip** animationClip);
+
+	public:
+		int _firstFrame;
+		int _lastFrame;
+		int _frameSpeed;
+		int _tickPerFrame;
 	private:
 
 		bool isClosingBracket(const char* str);
@@ -52,6 +58,7 @@ namespace SGA {
 
 		void getLocalTransform(std::string objFrom, std::string objTo, D3DXMATRIX& transform);
 
+	private:
 		enum {
 			BUFFER_SIZE = 256
 		};

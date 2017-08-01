@@ -13,15 +13,24 @@ namespace SGA {
 		bool isTagSame(const char* tag) const;
 
 		void setScale(float sx, float sy, float sz);
-		void setSpeed(float vx, float vy, float vz);
+		void setScale(const D3DXVECTOR3& scale);
 		void setPosition(float x, float y, float z);
+		void setPosition(const D3DXVECTOR3& pos);
 		void setRotation(float angleX, float angleY, float angleZ);
 		void setRotation(const D3DXVECTOR3& axis, float angle);
+		void setRotation(const D3DXQUATERNION& quat);
+
+		void setSpeed(float vx, float vy, float vz);
 
 		void setTransform(const D3DXMATRIX* transform);
 
-		const D3DXVECTOR3& getPosition() const { return _position; }
-		const D3DXQUATERNION& getQuaternion() const { return _quaternion; }
+		const D3DXVECTOR3& getLocalPosition() const { return _position; }
+		const D3DXQUATERNION& getLocalRotation() const { return _quaternion; }
+
+		D3DXVECTOR3 getWorldPosition() const;
+		D3DXQUATERNION getWorldRotation() const;
+
+		
 
 		//부모 좌표계를 기준으로 오브젝트를 이동시킨다.
 		void translate(float dx, float dy, float dz);
@@ -37,8 +46,7 @@ namespace SGA {
 
 		//this를 포함한 this의 하위 오브젝트들의 애니메이션 행렬을 설정한다.
 		//오브젝트의 _tag와 일치하는 이름을 가진 애니메이션 행렬이 선택된다.
-		void setKeyFrameAnimation(const KeyFrameSnapshot& animMatrices);
-		void setAnimationMatrix(const D3DXMATRIX& matAnim);
+		void setKeyFrameAnimation(const AnimationSnapshots& animMatrices);
 	
 		size_t getNObjects() const;
 

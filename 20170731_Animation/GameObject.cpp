@@ -256,7 +256,7 @@ namespace SGA {
 		D3DXQuaternionRotationYawPitchRoll(&quatRot, rotAngleY, rotAngleX, rotAngleZ);
 		D3DXMatrixRotationQuaternion(&rot, &quatRot);
 		D3DXVec3TransformNormal(&_position, &_position, &rot);
-		_quaternion = quatRot * _quaternion;
+		_quaternion = _quaternion * quatRot;
 		_isDirty = true;
 	}
 
@@ -264,7 +264,8 @@ namespace SGA {
 	{
 		D3DXQUATERNION quatRot;
 		D3DXQuaternionRotationYawPitchRoll(&quatRot, rotAngleY, rotAngleX, rotAngleZ);
-		_quaternion = quatRot * _quaternion;
+		_quaternion = _quaternion * quatRot;
+
 		_isDirty = true;
 	}
 }

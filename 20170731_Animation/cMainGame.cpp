@@ -81,11 +81,11 @@ namespace SGA {
 		_timeScale = (aseParser._tickPerFrame * aseParser._frameSpeed) / 1000.0f;
 		_startFrame = aseParser._firstFrame * aseParser._tickPerFrame;
 		_endFrame = aseParser._lastFrame * aseParser._tickPerFrame;
-		//loadedObject->insertChild(new Axis(1.f));
-		//loadedObject->insertChild("shoe01", new Axis(0.5f));
+
 		auto* tmp = loadedObject;
 		loadedObject = new MeshObject();
 		loadedObject->insertChild(tmp);
+		loadedObject->insertChild(new Axis(1.f));
 		loadedObject->translate(2, 0, 2);
 	}
 
@@ -98,10 +98,10 @@ namespace SGA {
 		g_pD3DDevice->SetTransform(D3DTS_VIEW, &(m_camera.GetLookAtMatrix()));
 
 		if (GET_KEY_MANAGER()->isStayKeyDown(VK_LEFT)) {
-			loadedObject->rotateLocal(-0.05, 0, 0);
+			loadedObject->rotateLocal(0.05, 0.05, 0);
 		}
 		else if (GET_KEY_MANAGER()->isStayKeyDown(VK_RIGHT)) {
-			loadedObject->rotateLocal(0.05, 0, 0);
+			loadedObject->rotateLocal(-0.05, -0.05, 0);
 		}
 
 		AnimationSnapshots animSnapshot;

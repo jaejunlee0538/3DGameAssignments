@@ -169,6 +169,7 @@
     <ClInclude Include="MeshObject.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="OBJLoader.h" />
+    <ClInclude Include="Ref.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="stdafx.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="MeshObject.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="OBJLoader.cpp" />
+    <ClCompile Include="Ref.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

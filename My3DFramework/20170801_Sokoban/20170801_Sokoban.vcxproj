@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0C01CFB8-E182-4243-A282-DDC2FEFDBAED}</ProjectGuid>
+    <ProjectGuid>{AB93D04B-198E-44A5-AEC3-6EEC731A6490}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My20170731_Animation</RootNamespace>
+    <RootNamespace>My20170801_Sokoban</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -149,7 +149,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="20170731_Animation.h" />
+    <ClInclude Include="20170801_Sokoban.h" />
     <ClInclude Include="ASEParser.h" />
     <ClInclude Include="Axis.h" />
     <ClInclude Include="BezierCurve.h" />
@@ -170,7 +170,6 @@
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="PlayerControlObject.h" />
-    <ClInclude Include="Ref.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="stdafx.h" />
@@ -182,7 +181,7 @@
     <ClInclude Include="VertexTypes.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="20170731_Animation.cpp" />
+    <ClCompile Include="20170801_Sokoban.cpp" />
     <ClCompile Include="ASEParser.cpp" />
     <ClCompile Include="Axis.cpp" />
     <ClCompile Include="BezierCurve.cpp" />
@@ -202,7 +201,6 @@
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="OBJLoader.cpp" />
     <ClCompile Include="PlayerControlObject.cpp" />
-    <ClCompile Include="Ref.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -215,10 +213,10 @@
     <ClCompile Include="UserInputs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="20170731_Animation.rc" />
+    <ResourceCompile Include="20170801_Sokoban.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="20170731_Animation.ico" />
+    <Image Include="20170801_Sokoban.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

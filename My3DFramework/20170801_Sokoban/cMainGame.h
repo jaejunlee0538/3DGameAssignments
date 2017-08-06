@@ -17,9 +17,10 @@ namespace SGA {
 		D3DLIGHT9 m_lightSun;
 		D3DXVECTOR3 m_sunDir;
 
-	
-
 		GameObject* loadedObject;
+		GameObject* objectBox;
+		GameObject* objectFloor;
+		GameObject* objectWall;
 		AnimationClip *_animationClip;
 
 		Grid _grid;

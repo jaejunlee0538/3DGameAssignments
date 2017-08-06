@@ -27,10 +27,13 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="20170731_Animation.h">
+    <ClInclude Include="20170801_Sokoban.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ASEParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Axis.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BezierCurve.h">
@@ -46,6 +49,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cPyramid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DSerialize.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Exceptions.h">
@@ -81,6 +87,9 @@
     <ClInclude Include="OBJLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerControlObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="SingletonBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -99,27 +108,18 @@
     <ClInclude Include="VertexTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D3DSerialize.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Axis.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Ref.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerControlObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="20170731_Animation.cpp">
+    <ClCompile Include="20170801_Sokoban.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ASEParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Axis.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BezierCurve.cpp">
@@ -135,6 +135,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cPyramid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DSerialize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Exceptions.cpp">
@@ -167,6 +170,9 @@
     <ClCompile Include="OBJLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerControlObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="StraightCurve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -179,21 +185,9 @@
     <ClCompile Include="UserInputs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D3DSerialize.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Axis.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Ref.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerControlObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="20170731_Animation.rc">
+    <ResourceCompile Include="20170801_Sokoban.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -201,7 +195,7 @@
     <Image Include="small.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="20170731_Animation.ico">
+    <Image Include="20170801_Sokoban.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

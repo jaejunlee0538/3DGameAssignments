@@ -5,6 +5,7 @@
 #include "MeshObject.h"
 #include "Axis.h"
 #include "PlayerControlObject.h"
+#include "OBJLoader.h"
 #define CHARACTER_RUN_TIME	10.0f
 namespace SGA {
 	IDirect3DTexture9 * g_textureIronman;
@@ -79,7 +80,7 @@ namespace SGA {
 
 		ASEParser aseParser;
 		MeshObject * meshObject = nullptr;
-		aseParser.load("woman/woman_01_all.ASE", &meshObject, &_animationClip);
+		aseParser.load("woman/woman_01_all_stand.ASE", &meshObject, &_animationClip);
 		_timeScale = (aseParser._tickPerFrame * aseParser._frameSpeed) / 1000.0f;
 		_startFrame = aseParser._firstFrame * aseParser._tickPerFrame;
 		_endFrame = aseParser._lastFrame * aseParser._tickPerFrame;
@@ -89,6 +90,22 @@ namespace SGA {
 		loadedObject->insertChild(meshObject);
 		loadedObject->insertChild(new Axis(1.0f));
 		loadedObject->insertChild("Bip01",new Axis(1.f));
+
+
+		ModelLoad::OBJLoader objLoader;
+
+		MeshModel* mesh1 = new MeshModel();
+		objLoader.load3DModel("Resource/FloorBox.obj", *mesh1);
+		objectBox = new MeshObject(mesh1);
+		objectBox->setPosition(2, 0, 0);
+		MeshModel* mesh2 = new MeshModel();
+		objLoader.load3DModel("Resource/ObjectBox.obj", *mesh2);
+		objectFloor = new MeshObject(mesh2);
+		objectFloor->setPosition(4, 0, 0);
+		MeshModel* mesh3 = new MeshModel();
+		objLoader.load3DModel("Resource/WallBox.obj", *mesh3);
+		objectWall = new MeshObject(mesh3);
+		objectWall->setPosition(6, 0, 0);
 	}
 
 	void cMainGame::Update()
@@ -110,7 +127,9 @@ namespace SGA {
 		_animationClip->interpolate(tickCount, animSnapshot);
 		loadedObject->setKeyFrameAnimation(animSnapshot);
 		loadedObject->update(false);
-
+		objectBox->update(false);
+		objectWall->update(false);
+		objectFloor->update(false);
 		//////////////////////태양 회전///////////////////////////////
 		D3DXMATRIX tmp;
 		D3DXVec3TransformNormal(&m_sunDir, &m_sunDir, D3DXMatrixRotationY(&tmp, 0.05));
@@ -121,7 +140,6 @@ namespace SGA {
 
 	void cMainGame::Render()
 	{
-
 		m_pD3DDevice->Clear(NULL,
 			NULL,
 			D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
@@ -130,6 +148,9 @@ namespace SGA {
 
 		m_pD3DDevice->BeginScene();
 		_grid.render();
+		objectBox->render();
+		objectWall->render();
+		objectFloor->render();
 
 		loadedObject->render();
 		m_pD3DDevice->EndScene();

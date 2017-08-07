@@ -58,7 +58,7 @@ void cCamera::Update(D3DXVECTOR3 playerPos, float angle)
 		deltaAngle = deltaAngle - 2 * D3DX_PI;
 	else if (deltaAngle < -D3DX_PI)
 		deltaAngle = 2 * D3DX_PI + deltaAngle;
-	m_fAngleY += deltaAngle*0.09f;
+	m_fAngleY += deltaAngle*0.1f;
 	m_fAngleY = NormalizeAngle(m_fAngleY);
 	//LogDebugMessage("PlayerAngle : %.1f, CameraAngle : %.1f\n", D3DXToDegree(angle), D3DXToDegree(m_fAngleY));
 
@@ -124,10 +124,10 @@ bool cCamera::MsgProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 
 void cCamera::UpdateViewMatrix()
 {
-	 m_vEye.y = m_vTarget.y + m_fDistance * sin(m_fAngleX);
+	m_vEye.y = m_vTarget.y + m_fDistance * sin(m_fAngleX);
 	m_vEye.x = m_vTarget.x + m_fDistance * cos(m_fAngleX) * sin(m_fAngleY);
 	m_vEye.z = m_vTarget.z + m_fDistance * cos(m_fAngleX) * cos(m_fAngleY);
-	LogDebugMessage("x y z : %.3f %.3f %.3f\n", m_vEye.x, m_vEye.y, m_vEye.z);
+	//LogDebugMessage("x y z : %.3f %.3f %.3f\n", m_vEye.x, m_vEye.y, m_vEye.z);
 	D3DXMATRIX matView;
 	D3DXMatrixLookAtLH(&matView,
 		&m_vEye,

@@ -34,6 +34,9 @@
     <None Include="Resource\DestinationBox.mtl">
       <Filter>리소스 파일</Filter>
     </None>
+    <None Include="Resource\ObjectSphere.mtl">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -135,6 +138,12 @@
     <ClInclude Include="cButton.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SokobanCommands.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SokobanObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -225,6 +234,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cButton.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SokobanCommands.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SokobanObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

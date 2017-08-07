@@ -1,90 +1,10 @@
 #pragma once
 #include "LinearInterpolater.h"
 #include <functional>
-class cFrame;
-class cCamera;
-
-extern const float BOX_SCALE;
-extern const float BOX_SIZE;
-
-enum GridObjectTypes {
-	OBJ_NONE = -1,
-	OBJ_FLOOR = 1,
-	OBJ_BALL = 2,
-	OBJ_DESTINATION = 3,
-	OBJ_WALL = 0,
-	OBJ_PLAYER = 4
-};
-
-//소코반 게임 오브젝트들의 상위 클래스
-class GridObject {
-public:
-	enum LookDirections {
-		DIR_UP = 0,
-		DIR_RIGHT,
-		DIR_DOWN,
-		DIR_LEFT,
-
-		NUM_DIRS
-	};
-
-	GridObject();
-	virtual ~GridObject(){}
-
-	void SetType(GridObjectTypes objType) { m_objType = objType; }
-	GridObjectTypes GetType() { return m_objType; }
-
-	virtual void Setup(POINT initPos, LookDirections lookDir, float yOffset);
-
-	virtual void Update(int time, POINT realPos);
-
-	virtual void Render();
-
-	bool isMoving() const {
-		return m_isMoving;
-	}
-
-	float GetAngle() const;
-	void TurnLeft();
-	void TurnRight();
-	LookDirections GetLookDirection() const { return m_lookDir; }
-	//오브젝트의 XYZ위치를 반환한다.
-	D3DXVECTOR3 GetCurrentXYZ() { return m_currentXYZ; }
-	//오브젝트의 현재 그리드 위치(인덱스)를 반환한다.
-	POINT GetCurrentIdx() { return m_currentIdx; }
-protected:
-	void SetCurrentObject(cFrame* currentObj);
-	cFrame* GetCurrentObject();
-protected:
-	
-	float						m_movePhase;
-	int							m_currentTime;
-	GridObjectTypes				m_objType;
-	D3DXMATRIX					m_matWorld;
-	cFrame*						m_currentObj;
-	LookDirections				m_lookDir;
-	D3DXVECTOR3					m_currentXYZ;
-	POINT						m_currentIdx;
-	LinearInterpolator			m_lerp;
-	bool						m_isMoving;
-};
-
-//플레이어 클래스
-class PlayerObject :public GridObject {
-public:
-	PlayerObject(cFrame* pRunning, cFrame* pIdle);
-	virtual ~PlayerObject();
-	void Update(int time, POINT realPos) override;
-protected:
-	cFrame* m_pRunning;
-	cFrame* m_pIdle;
-};
-
-//바닥, 목적지, 벽, 움직이는물체를 위한 클래스
-class BoxObject : public GridObject {
-public:
-	BoxObject(cFrame* pBox);
-};
+#include <vector>
+#include <memory>
+#include "SokobanObject.h"
+#include "SokobanCommands.h"
 
 class SokobanGame
 {
@@ -106,6 +26,16 @@ public:
 	void Update(int time);
 	//렌더
 	void Render();
+
+	void Redo();
+	void Undo();
+
+	GridObject* GetPlayer() { return m_pPlayer; }
+	GridObject* GetGridObject(int ix, int iy) { return m_mapFloor2[iy][ix]; }
+	void SetGridObject(int ix, int iy, GridObject* obj) {
+		m_mapFloor2[iy][ix] = obj;
+	}
+
 	void SetStageLoadCallback(std::function<void(std::string stageName)> cbStageLoad) {
 		m_cbStageLoad = cbStageLoad;
 	}
@@ -125,10 +55,11 @@ public:
 	//총 이동 횟수를 반환
 	int GetMovementCount() { return m_nMovements; }
 private:
+	void InsertAndDoCommand(std::shared_ptr<ICommand> newCommand);
 	BoxObject* CreateFloor(int ix, int iy);
 	BoxObject* CreateDestination(int ix, int iy);
 	BoxObject* CreateWall(int ix, int iy);
-	BoxObject* CreateBall(int ix, int iy);
+	BallObject* CreateBall(int ix, int iy);
 	PlayerObject* CreatePlayer(int ix, int iy);
 private:
 	/////////////////////콜백함수들/////////////////////
@@ -146,6 +77,12 @@ private:
 	//편의상 만들어 놓은 플레이어 포인터
 	PlayerObject* m_pPlayer;
 
+	//Redo/Undo구현을 위한
+	//마지막으로 적용된 커맨드의 인덱스를 나타낸다. 
+	//현재 적용된 커맨드가 없으면 -1을 가진다.
+	int										m_currentCommand;
+	std::vector<std::shared_ptr<ICommand>>	m_commandHistory;
+
 	///////////////////GridObject들이 공유하는 cFrame객체////////////////////////////////////////
 	cFrame* m_pPlayerRunning;
 	cFrame* m_pPlayerIdle;
@@ -158,4 +95,5 @@ public:
 	int							m_Lastframe;
 	float						m_FrameSpeed;
 };
+
 

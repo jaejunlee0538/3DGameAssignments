@@ -1,0 +1,12 @@
+# Blender MTL File: 'ObjectSphere.blend'
+# Material Count: 1
+
+newmtl None
+Ns 0
+Ka 0 0 0
+Kd 0.8 0.8 0.8
+Ks 1.0 1.0 1.0
+Ke 0 0 0
+d 20
+illum 2
+map_Kd Resource/0040-dark-fine-wood-texture-seamless.jpg

@@ -82,6 +82,7 @@
     <None Include="Resource\DestinationBox.mtl" />
     <None Include="Resource\FloorBox.mtl" />
     <None Include="Resource\ObjectBox.mtl" />
+    <None Include="Resource\ObjectSphere.mtl" />
     <None Include="Resource\WallBox.mtl" />
     <None Include="small.ico" />
   </ItemGroup>
@@ -116,7 +117,9 @@
     <ClInclude Include="Dx3D.h" />
     <ClInclude Include="LinearInterpolater.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SokobanCommands.h" />
     <ClInclude Include="SokobanGame.h" />
+    <ClInclude Include="SokobanObject.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -149,7 +152,9 @@
     <ClCompile Include="cTimeManager.cpp" />
     <ClCompile Include="Dx3D.cpp" />
     <ClCompile Include="LinearInterpolater.cpp" />
+    <ClCompile Include="SokobanCommands.cpp" />
     <ClCompile Include="SokobanGame.cpp" />
+    <ClCompile Include="SokobanObject.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

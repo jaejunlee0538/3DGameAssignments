@@ -5,139 +5,7 @@
 #include "cAseLoader.h"
 #include "cCamera.h"
 
-const float BOX_SCALE = 0.5f;
-const float BOX_SIZE = 2.0 * BOX_SCALE;
-const int MOVE_TIME = 500;
 
-GridObject::GridObject()
-	:m_currentObj(NULL)
-{
-	
-}
-
-void GridObject::Setup(POINT initPos, LookDirections lookDir, float yOffset)
-{
-	m_currentIdx.x = initPos.x;
-	m_currentIdx.y = initPos.y;
-
-	m_currentXYZ.x = initPos.x * BOX_SIZE;
-	m_currentXYZ.y = yOffset;
-	m_currentXYZ.z = initPos.y * BOX_SIZE;
-
-	m_lookDir = lookDir;
-
-	m_isMoving = false;
-}
-
-void GridObject::Update(int time, POINT realPos) {
-	if (isMoving() == false && (realPos.x != m_currentIdx.x || realPos.y != m_currentIdx.y)) {
-		m_lerp.init(m_currentIdx.x * BOX_SIZE, m_currentXYZ.y, m_currentIdx.y * BOX_SIZE,
-			realPos.x * BOX_SIZE, m_currentXYZ.y, realPos.y * BOX_SIZE);
-		m_currentIdx = realPos;
-		m_isMoving = true;
-		m_movePhase = 0.0f;
-	}
-
-	if (isMoving()) {
-		m_movePhase += 0.05;
-		if (m_movePhase >= 1.0f) {
-			//다 움직임!
-			m_movePhase = 1.0f;
-			m_isMoving = false;
-		}
-		//이동용 애니메이션
-		m_lerp.calculateWithPhase(m_movePhase);
-		m_currentXYZ.x = m_lerp.getX();
-		m_currentXYZ.y = m_lerp.getY();
-		m_currentXYZ.z = m_lerp.getZ();
-	}
-
-	m_currentTime = time;
-}
-
-void GridObject::Render()
-{
-	if (m_currentObj) {
-		//월드 행렬 업데이트
-		D3DXMATRIX matR, matT;
-		D3DXMatrixRotationY(&matR, GetAngle());
-		D3DXMatrixTranslation(&matT, m_currentXYZ.x, m_currentXYZ.y, m_currentXYZ.z);
-		m_matWorld = matR * matT;
-
-		m_currentObj->Update(m_currentTime, &m_matWorld);
-		m_currentObj->Render();
-	}
-}
-
-float GridObject::GetAngle() const
-{
-	switch (m_lookDir) {
-	case DIR_UP:
-		return D3DX_PI;
-	case DIR_RIGHT:
-		return D3DX_PI * 3 / 2;
-	case DIR_DOWN:
-		return 0;
-	case DIR_LEFT:
-		return D3DX_PI / 2;
-	}
-	assert(false);
-}
-
-void GridObject::TurnLeft()
-{
-	int dir = m_lookDir;
-	dir--;
-	if (dir < 0) {
-		dir = NUM_DIRS - 1;
-	}
-	m_lookDir = static_cast<LookDirections>(dir);
-}
-
-void GridObject::TurnRight()
-{
-	int dir = m_lookDir;
-	dir++;
-	if (dir == NUM_DIRS) {
-		dir = 0;
-	}
-	m_lookDir = static_cast<LookDirections>(dir);
-}
-
-void GridObject::SetCurrentObject(cFrame * currentObj)
-{
-	m_currentObj = currentObj;
-}
-
-cFrame * GridObject::GetCurrentObject()
-{
-	return m_currentObj;
-}
-
-PlayerObject::PlayerObject(cFrame* pRunning, cFrame* pIdle)
-	:m_pRunning(pRunning), m_pIdle(pIdle)
-{
-}
-
-PlayerObject::~PlayerObject()
-{
-}
-
-void PlayerObject::Update(int time, POINT realPos)
-{
-	GridObject::Update(time, realPos);
-	if (isMoving()==true && GetCurrentObject() != m_pRunning) {
-		SetCurrentObject(m_pRunning);
-	}
-	else if (isMoving() == false && GetCurrentObject() != m_pIdle) {
-		SetCurrentObject(m_pIdle);
-	}
-}
-
-BoxObject::BoxObject(cFrame * pBox)
-{
-	SetCurrentObject(pBox);
-}
 
 SokobanGame::SokobanGame()
 {
@@ -176,7 +44,7 @@ void SokobanGame::Init()
 	{
 		cObjLoader objLoader;
 		//Object
-		objLoader.Load("./Resource/ObjectBox.obj", tmp);
+		objLoader.Load("./Resource/ObjectSphere.obj", tmp);
 		m_pObject = tmp[0];
 		tmp.clear();
 	}
@@ -298,6 +166,9 @@ void SokobanGame::Reset()
 	m_mapFloor1.clear();
 	m_mapFloor2.clear();
 	m_pPlayer = NULL;
+
+	m_currentCommand = -1;
+	m_commandHistory.clear();
 }
 
 void SokobanGame::Uninitalize()
@@ -339,16 +210,16 @@ void SokobanGame::Update(int time)
 		{
 			int deltaIx, deltaIz;
 			switch (m_pPlayer->GetLookDirection()) {
-			case GridObject::DIR_UP:
+			case DIR_UP:
 				deltaIx = 0; deltaIz = 1;
 				break;
-			case GridObject::DIR_RIGHT:
+			case DIR_RIGHT:
 				deltaIx = 1; deltaIz = 0;
 				break;
-			case GridObject::DIR_DOWN:
+			case DIR_DOWN:
 				deltaIx = 0; deltaIz = -1;
 				break;
-			case GridObject::DIR_LEFT:
+			case DIR_LEFT:
 				deltaIx = -1; deltaIz = 0;
 				break;
 			}
@@ -370,9 +241,9 @@ void SokobanGame::Update(int time)
 					int nextNextIdxZ = nextIdxZ + deltaIz;
 					if (nextNextIdxX >= 0 && nextNextIdxX < m_szMapX && nextNextIdxZ >= 0 && nextNextIdxZ < m_szMapY) {
 						if (m_mapFloor2[nextNextIdxZ][nextNextIdxX] == NULL) {
-							m_mapFloor2[nextNextIdxZ][nextNextIdxX] = m_mapFloor2[nextIdxZ][nextIdxX];
-							m_mapFloor2[nextIdxZ][nextIdxX] = m_mapFloor2[playerIdxZ][playerIdxX];
-							m_mapFloor2[playerIdxZ][playerIdxX] = NULL;
+							//플레이어와 박스를 같이 움직인다.
+							//커맨드 생성
+							InsertAndDoCommand(std::make_shared<CommandMove>(playerIdxX, playerIdxZ, deltaIx, deltaIz, true));
 							m_nMovements++;
 							if (m_cbMovementUpdate) {
 								m_cbMovementUpdate(m_nMovements);
@@ -387,9 +258,10 @@ void SokobanGame::Update(int time)
 				}
 			}
 			else {
-				m_mapFloor2[playerIdxZ + deltaIz][playerIdxX + deltaIx] = m_mapFloor2[playerIdxZ][playerIdxX];
-				m_mapFloor2[playerIdxZ][playerIdxX] = NULL;
+				//플레이어만 이동
 				m_nMovements++;
+				//커맨드 생성 및 실행
+				InsertAndDoCommand(std::make_shared<CommandMove>(playerIdxX, playerIdxZ, deltaIx, deltaIz, false));
 				if (m_cbMovementUpdate) {
 					m_cbMovementUpdate(m_nMovements);
 				}
@@ -397,16 +269,15 @@ void SokobanGame::Update(int time)
 		}
 		if (g_pKeyManager->isOnceKeyDown('S'))
 		{
-			m_pPlayer->TurnLeft();
-			m_pPlayer->TurnLeft();
+			InsertAndDoCommand(std::make_shared<CommandPlayerTurn>(CommandPlayerTurn::TURN_LEFT, 2));
 		}
 		if (g_pKeyManager->isOnceKeyDown('A'))
 		{
-			m_pPlayer->TurnLeft();
+			InsertAndDoCommand(std::make_shared<CommandPlayerTurn>(CommandPlayerTurn::TURN_LEFT, 1));
 		}
 		if (g_pKeyManager->isOnceKeyDown('D'))
 		{
-			m_pPlayer->TurnRight();
+			InsertAndDoCommand(std::make_shared<CommandPlayerTurn>(CommandPlayerTurn::TURN_RIGHT, 1));
 		}
 	}
 	for (size_t iy = 0; iy < m_szMapY; ++iy) {
@@ -446,6 +317,22 @@ void SokobanGame::Render()
 	}
 }
 
+void SokobanGame::Redo() {
+	if (m_commandHistory.empty())
+		return;
+	if (m_currentCommand < (int)m_commandHistory.size() - 1) {
+		m_commandHistory[++m_currentCommand]->Do(*this);
+	}
+}
+
+void SokobanGame::Undo() {
+	if (m_commandHistory.empty())
+		return;
+	if (m_currentCommand >= 0) {
+		m_commandHistory[m_currentCommand--]->Undo(*this);
+	}
+}
+
 bool SokobanGame::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	return false;
@@ -461,10 +348,20 @@ float SokobanGame::GetPlayerLookAngle()
 	return m_pPlayer->GetAngle();
 }
 
+void SokobanGame::InsertAndDoCommand(std::shared_ptr<ICommand> newCommand)
+{
+	while (m_currentCommand < (int)m_commandHistory.size()-1) {
+		m_commandHistory.pop_back();
+	}
+	newCommand->Do(*this);
+	m_currentCommand++;
+	m_commandHistory.push_back(newCommand);
+}
+
 BoxObject * SokobanGame::CreateFloor(int ix, int iy)
 {
 	BoxObject* box = new BoxObject(m_pFloor);
-	box->Setup({ ix, iy }, GridObject::DIR_RIGHT, -0.5*BOX_SIZE);
+	box->Setup({ ix, iy }, DIR_RIGHT, -0.5*BOX_SIZE);
 	box->SetType(OBJ_FLOOR);
 	return box;
 }
@@ -472,7 +369,7 @@ BoxObject * SokobanGame::CreateFloor(int ix, int iy)
 BoxObject * SokobanGame::CreateDestination(int ix, int iy)
 {
 	BoxObject* box = new BoxObject(m_pDest);
-	box->Setup({ ix, iy }, GridObject::DIR_RIGHT, -0.5*BOX_SIZE);
+	box->Setup({ ix, iy }, DIR_RIGHT, -0.5*BOX_SIZE);
 	box->SetType(OBJ_DESTINATION);
 	return box;
 }
@@ -480,25 +377,23 @@ BoxObject * SokobanGame::CreateDestination(int ix, int iy)
 BoxObject * SokobanGame::CreateWall(int ix, int iy)
 {
 	BoxObject* box = new BoxObject(m_pWall);
-	box->Setup({ ix, iy }, GridObject::DIR_RIGHT, 0.5*BOX_SIZE);
+	box->Setup({ ix, iy }, DIR_RIGHT, 0.5*BOX_SIZE);
 	box->SetType(OBJ_WALL);
 	return box;
 }
 
-BoxObject * SokobanGame::CreateBall(int ix, int iy)
+BallObject * SokobanGame::CreateBall(int ix, int iy)
 {
-	BoxObject* box = new BoxObject(m_pObject);
-	box->Setup({ ix, iy }, GridObject::DIR_RIGHT, 0.5*BOX_SIZE);
-	box->SetType(OBJ_BALL);
-	return box;
+	BallObject* ball = new BallObject(m_pObject);
+	ball->Setup({ ix, iy }, DIR_RIGHT, 0.5*BOX_SIZE);
+	ball->SetType(OBJ_BALL);
+	return ball;
 }
 
 PlayerObject * SokobanGame::CreatePlayer(int ix, int iy)
 {
 	PlayerObject* player = new PlayerObject(m_pPlayerRunning, m_pPlayerIdle);
 	player->SetType(OBJ_PLAYER);
-	player->Setup({ ix, iy }, GridObject::DIR_RIGHT, 0);
+	player->Setup({ ix, iy }, DIR_RIGHT, 0);
 	return player;
 }
-
-

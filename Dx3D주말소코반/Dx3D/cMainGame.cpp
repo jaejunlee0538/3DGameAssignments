@@ -61,6 +61,14 @@ void cMainGame::Setup()
 	cButton * btnNextStage = new cButton();
 	btnNextStage->Init(createRECT(clntRect.left + 380, clntRect.bottom - 50, 150, 50),
 		"Next", std::bind(&cMainGame::StartNextGame, this));
+	//Undo 버튼
+	cButton * btnUndo = new cButton();
+	btnUndo->Init(createRECT(clntRect.left + 10, clntRect.top + 50, 150, 50),
+		"Undo", std::bind(&SokobanGame::Undo, &m_sokoban));
+	//Redo 버튼
+	cButton * btnRedo = new cButton();
+	btnRedo->Init(createRECT(clntRect.left + 170, clntRect.top + 50, 150, 50),
+		"Redo", std::bind(&SokobanGame::Redo, &m_sokoban));
 	//Move카운트
 	cButton* btnMoveCount = new cButton();
 	btnMoveCount->Init(createRECT(clntRect.right - 300, clntRect.bottom - 50, 250, 50), "이동 : 0", NULL);
@@ -83,6 +91,8 @@ void cMainGame::Setup()
 	m_vecButtons.push_back(btnPrevStage);
 	m_vecButtons.push_back(btnNextStage);
 	m_vecButtons.push_back(btnStage);
+	m_vecButtons.push_back(btnUndo);
+	m_vecButtons.push_back(btnRedo);
 	/////////////////////Scene 시간 설정/////////////////////////
 	m_Firstframe = m_sokoban.m_Firstframe;
 	m_Lastframe = m_sokoban.m_Lastframe;
@@ -105,6 +115,7 @@ void cMainGame::Setup()
 	///////////////////////////////////////////////////////////
 	g_pD3DDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
+	g_pD3DDevice->SetRenderState(D3DRS_SPECULARENABLE, true);
 	UpdateLight();
 }
 
@@ -172,10 +183,11 @@ void cMainGame::UpdateLight()
 	ZeroMemory(&stLight, sizeof(D3DLIGHT9));
 	stLight.Type = D3DLIGHT_DIRECTIONAL;
 	stLight.Direction = m_pCamera->GetLookDir();
-	stLight.Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f) * 0.15f;
+	stLight.Ambient = D3DXCOLOR(0.4f,0.4f,0.4f, 1.0f) * 0.15f;
 	stLight.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	stLight.Specular = D3DXCOLOR(0.75f, 0.75f, 0.75f, 1.0f);
+	stLight.Specular = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
 	g_pD3DDevice->SetLight(0, &stLight);
+	
 	g_pD3DDevice->LightEnable(0, true);
 }
 

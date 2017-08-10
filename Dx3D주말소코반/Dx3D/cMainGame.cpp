@@ -82,8 +82,8 @@ void cMainGame::Setup()
 	m_sokoban.SetStageLoadCallback([btnStage](std::string stageName) {
 		btnStage->SetText(stageName);
 	});
-	//버튼에 콜백 등록
 
+	//버튼에 콜백 등록
 	m_sokoban.SetGameClearCallback(std::bind(&cMainGame::GameCleared, this, std::placeholders::_1));
 
 	m_vecButtons.push_back(btnRestart);

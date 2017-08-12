@@ -166,7 +166,7 @@ void cMainGame::Render()
 			for (auto pFrame : m_gameMap) {
 				pFrame->RenderUP();
 			}
-			//m_pPlayer->RenderUP();
+			m_pPlayer->RenderUP();
 			//m_pGrid->RenderUP();
 		}
 		DWORD elapsedTimeUP = stopWatch.GetElapsedTime();
@@ -181,7 +181,7 @@ void cMainGame::Render()
 			for (auto pFrame : m_gameMap) {
 				pFrame->Render();
 			}
-			//m_pPlayer->Render();
+			m_pPlayer->Render();
 			//m_pGrid->Render();
 		}
 		DWORD elapsedTimeVB = stopWatch.GetElapsedTime();
@@ -194,7 +194,7 @@ void cMainGame::Render()
 		stopWatch.Start();
 		for (size_t i = 0; i < NDraws; ++i) {
 			m_gameMapMesh->RenderMesh();
-			//m_pPlayer->RenderMesh();
+			m_pPlayer->RenderMesh();
 			//m_pGrid->Render();
 		}
 		DWORD elapsedTimeMesh = stopWatch.GetElapsedTime();

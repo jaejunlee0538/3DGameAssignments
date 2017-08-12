@@ -9,6 +9,7 @@ cFrame::cFrame(void)
 {
 	D3DXMatrixIdentity(&mfinal);
 	D3DXMatrixIdentity(&localmtl);
+	D3DXMatrixInverse(&mfinalInv, 0, &mfinal);
 	m_animTimeFrameLength = 0;
 	m_animTimeOffset = 0;
 	m_animTimeScale = 0;
@@ -165,7 +166,7 @@ void cFrame::Update(DWORD currentTime, D3DXMATRIX* parent){
 	mfinal = mquat*mpos;
 	if(parent)
 		mfinal = (mfinal*(*parent));
-
+	D3DXMatrixInverse(&mfinalInv, 0, &mfinal);
 	for each(auto pChild in m_vecChild) {
 		pChild->Update(currentTime, &mfinal);
 	}
@@ -184,6 +185,18 @@ void cFrame::TransformVertices(D3DXMATRIX m)
 		D3DXVec3TransformCoord(&v.p, &v.p, &m);
 		D3DXVec3TransformNormal(&v.n, &v.n, &m);
 	}
+}
+
+bool cFrame::IsCollideWithRay(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir, float & distance)
+{
+	//광선을 메시의 로컬 좌표계로 변환한다.
+	D3DXVec3TransformCoord(&rayPos, &rayPos, &mfinalInv);
+	D3DXVec3TransformNormal(&rayDir, &rayDir, &mfinalInv);
+
+	BOOL hitted;
+	HRESULT ret = D3DXIntersect(m_pMesh, &rayPos, &rayDir,&hitted, NULL, NULL, NULL,&distance, NULL, NULL);
+	assert(ret == D3D_OK);
+	return hitted == TRUE;
 }
 
 void cFrame::interpolateTranslation(IN DWORD time, OUT D3DXVECTOR3 & xyz)

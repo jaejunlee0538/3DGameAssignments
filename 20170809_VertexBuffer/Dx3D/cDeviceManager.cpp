@@ -22,15 +22,30 @@ cDeviceManager::cDeviceManager(void)
 	{
 		nVertexProcessing = D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 	}
+	//////////////////////////////////////////////////////////////////////
+	
+	//stCaps.
+	//if(FAILED(m_pD3D->CheckDeviceType(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, )))
 
 	D3DPRESENT_PARAMETERS stD3DPP;
 	ZeroMemory(&stD3DPP, sizeof(D3DPRESENT_PARAMETERS));
 	stD3DPP.SwapEffect				= D3DSWAPEFFECT_DISCARD;
-	stD3DPP.Windowed				= TRUE;
-	stD3DPP.BackBufferFormat		= D3DFMT_UNKNOWN;
+	stD3DPP.Windowed				= FALSE;
+	stD3DPP.BackBufferFormat		= D3DFMT_A8R8G8B8;
 	stD3DPP.EnableAutoDepthStencil	= TRUE;
-	stD3DPP.AutoDepthStencilFormat	= D3DFMT_D24S8;
+	stD3DPP.AutoDepthStencilFormat	= D3DFMT_D16;
+	stD3DPP.hDeviceWindow = g_hWnd;
+	stD3DPP.BackBufferWidth = 1920;
+	stD3DPP.BackBufferHeight = 1080;
 
+	DWORD quality;
+	//if (m_pD3D->CheckDeviceMultiSampleType(stCaps.AdapterOrdinal, stCaps.DeviceType, D3DFMT_UNKNOWN, TRUE, D3DMULTISAMPLE_4_SAMPLES, &quality)
+	//	&& m_pD3D->CheckDeviceMultiSampleType(stCaps.AdapterOrdinal, stCaps.DeviceType, D3DFMT_D16, TRUE, D3DMULTISAMPLE_4_SAMPLES, &quality)) {
+	//	stD3DPP.MultiSampleType = D3DMULTISAMPLE_4_SAMPLES;
+	//	stD3DPP.MultiSampleQuality = quality;
+	//	LogDebugMessage("Multisampling Áö¿ø\n");
+	//}
+	//////////////////////////////////////////////////////////////////////
 	m_pD3D->CreateDevice(D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
 		g_hWnd,

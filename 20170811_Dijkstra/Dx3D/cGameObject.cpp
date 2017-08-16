@@ -20,8 +20,7 @@ void cGameObject::Update(DWORD time)
 {
 	m_vPrevPosition = m_vPos;
 
-	if (m_pAction)
-	{
+	if (m_pAction){
 		m_pAction->Update();
 	}
 	m_vMoveDirection = m_vPos - m_vPrevPosition;

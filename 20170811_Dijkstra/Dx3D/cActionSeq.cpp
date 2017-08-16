@@ -10,10 +10,10 @@ cActionSeq::cActionSeq(void)
 
 cActionSeq::~cActionSeq(void)
 {
-	for each(auto p in m_vecAction)
-	{
+	for each(auto p in m_vecAction){
 		SAFE_RELEASE(p);
 	}
+	m_vecAction.clear();
 }
 
 void cActionSeq::AddAction( cAction* pAction )

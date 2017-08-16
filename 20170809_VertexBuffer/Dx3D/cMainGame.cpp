@@ -69,8 +69,8 @@ void cMainGame::Setup()
 
 	{
 		D3DXMATRIX matR, matS;
-		D3DXMatrixScaling(&matS, 0.01, 0.01, 0.01);
-		//D3DXMatrixScaling(&matS, 1,1,1);
+		//D3DXMatrixScaling(&matS, 0.01, 0.01, 0.01);
+		D3DXMatrixScaling(&matS, 1,1,1);
 
 		D3DXMatrixRotationX(&matR, D3DXToRadian(-90));
 		{
@@ -137,7 +137,7 @@ void cMainGame::Update()
 void cMainGame::Render()
 {
 	char strBuffer[256];
-	const size_t NDraws = 200;
+	const size_t NDraws = 1;
 
 	g_pD3DDevice->Clear(NULL,
 		NULL,

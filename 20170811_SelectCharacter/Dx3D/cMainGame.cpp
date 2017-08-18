@@ -122,7 +122,6 @@ void cMainGame::Render()
 
 bool cMainGame::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-
 	switch (message) {
 	case WM_LBUTTONDOWN:
 	{
@@ -130,18 +129,17 @@ bool cMainGame::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		pt.x = LOWORD(lParam);
 		pt.y = HIWORD(lParam);
 		if (m_pFloor) {
-		
 			D3DXVECTOR3 targetPos;
 			if (GetPickingPoint(pt.x, pt.y, m_pFloor->GetVertex(), targetPos)) {
 				//플레이어를 선택!
 				D3DXVECTOR3 rayDir, rayPos;
 				rayPos = m_pCamera->GetPosition();
 				rayDir = targetPos - rayPos;
-				TryPickPlayer(rayPos, rayDir);
-				return true;
+				if (TryPickPlayer(rayPos, rayDir)) {
+					return true;
+				}
 			}
 		}
-		return false;
 	}
 	break;
 	case WM_RBUTTONDOWN:
@@ -158,7 +156,6 @@ bool cMainGame::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				return true;
 			}
 		}
-		return false;
 	}
 	break;
 	default:
@@ -226,13 +223,13 @@ void cMainGame::InitPlayer()
 
 	//SelectionCone의 메시
 	SAFE_RELEASE(m_pMeshSelectionCone);
-	const float coneLength = 1.0f;
-	D3DXCreateCylinder(g_pD3DDevice, 0, 0.25, coneLength, 10, 10, &m_pMeshSelectionCone, NULL);
+	const float coneLength = 0.4f;
+	D3DXCreateCylinder(g_pD3DDevice, 0, 0.1f, coneLength, 10, 10, &m_pMeshSelectionCone, NULL);
 	size_t nVertices = m_pMeshSelectionCone->GetNumVertices();
 	ST_PN_VERTEX* vertex;
 	D3DXMATRIX matRot;
 	D3DXMatrixRotationX(&matRot, D3DXToRadian(-90));
-	matRot._42 = 1.5 + 0.5*coneLength;//플레이어 머리 위에 얼마나 높이 떠있을지.
+	matRot._42 = 1.2 + 0.5*coneLength;//플레이어 머리 위에 얼마나 높이 떠있을지.
 	m_pMeshSelectionCone->LockVertexBuffer(0, (LPVOID*)&vertex);
 	for (size_t i = 0; i < nVertices; ++i) {
 		D3DXVec3TransformCoord(&vertex[i].p, &vertex[i].p, &matRot);
@@ -241,9 +238,9 @@ void cMainGame::InitPlayer()
 	m_pMeshSelectionCone->UnlockVertexBuffer();
 
 	//SelectionCone의 매터리얼
-	m_mtlSelectionCone.Ambient = D3DXCOLOR(1,1,1,1);
+	m_mtlSelectionCone.Ambient = D3DXCOLOR(1, 0,0,1);
 	m_mtlSelectionCone.Diffuse = D3DXCOLOR(1, 1, 1, 1);
-	m_mtlSelectionCone.Specular = D3DXCOLOR(0,0,0, 1);
+	m_mtlSelectionCone.Specular = D3DXCOLOR(1, 1, 1, 1);
 	m_mtlSelectionCone.Power = 20.0f;
 	m_mtlSelectionCone.Emissive = D3DXCOLOR(0, 0, 0, 1);
 }
@@ -283,7 +280,7 @@ void cMainGame::DrawSelectCones()
 	}
 }
 
-void cMainGame::TryPickPlayer(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir)
+bool cMainGame::TryPickPlayer(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir)
 {
 	D3DXVec3Normalize(&rayDir, &rayDir);
 	for each(auto player in m_pPlayers) {
@@ -299,9 +296,10 @@ void cMainGame::TryPickPlayer(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir)
 				m_selectedPlayers.insert(player);
 			}
 			//플레이어가 겹쳐 있는 경우 하나만 선택되도록 하기 위해 break를 건다.
-			break;
+			return true;
 		}
 	}
+	return false;
 }
 
 bool cMainGame::GetPickingPoint(int px, int py, const std::vector<ST_PNT_VERTEX>& triangles, D3DXVECTOR3 & pickingPoint)

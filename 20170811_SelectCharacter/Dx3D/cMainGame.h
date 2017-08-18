@@ -47,7 +47,7 @@ private:
 	void DrawSelectCones();
 
 	//광선가지고 플레이어를 선택.
-	void TryPickPlayer(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir);
+	bool TryPickPlayer(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir);
 	bool GetPickingPoint(int px, int py, const std::vector<ST_PNT_VERTEX>& triangles, D3DXVECTOR3& pickingPoint);
 
 	//플레이어를 destPos로 보내기 위해 경로를 생성하고 Action을 생성한다.

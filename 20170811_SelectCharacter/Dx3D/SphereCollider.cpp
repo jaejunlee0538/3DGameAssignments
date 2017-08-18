@@ -25,7 +25,7 @@ bool SphereCollider::CheckRayCollision(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir, f
 	a = D3DXVec3Dot(&rayDir, &rayDir);
 	b = 2 * D3DXVec3Dot(&rayPos, &rayDir);
 	c = D3DXVec3Dot(&rayPos, &rayPos) - m_radius*m_radius;
-
+	
 	//근의 공식
 	float test = b*b - 4*a*c;//판별식
 	if (test < 0.0f)//판별식이 0보다 작으면 방정식의 해가 존재하지 않는다!

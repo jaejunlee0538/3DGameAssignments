@@ -1,0 +1,13 @@
+# Blender MTL File: 'Object.blend'
+# Material Count: 1
+
+newmtl Material
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 1 1 1
+Ks 1 1 1
+Ke 1 1 1
+Ni 1.000000
+d 20.000000
+illum 2
+map_Kd Resource/TileImage.png

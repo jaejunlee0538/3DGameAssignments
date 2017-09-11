@@ -16,6 +16,7 @@ public:
 	}
 
 	virtual bool CheckRayCollision(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir, float* distance) const = 0;
+	virtual void Render() const{}
 protected:
 	cGameObject* m_parentObject;
 };

@@ -19,7 +19,6 @@ void Bone::calculateCombinedTransformationMatrix(Bone * parent)
 	if (child) {
 		child->calculateCombinedTransformationMatrix(this);
 	}
-
 }
 
 

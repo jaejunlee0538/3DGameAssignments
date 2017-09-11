@@ -56,13 +56,15 @@ void cSkinnedModel::Render(Bone* bone)
 				for (int i = 0; i < numBones; ++i) {
 					if (pBoneMesh->boneMatrixPtrs[i]) {
 						D3DXMatrixMultiply(&pBoneMesh->currentBoneMatrices[i], &pBoneMesh->boneOffsetMatrices[i], pBoneMesh->boneMatrixPtrs[i]);
+						//pBoneMesh->currentBoneMatrices[i] = *pBoneMesh->boneMatrixPtrs[i];
+						//pBoneMesh->currentBoneMatrices[i] = pBoneMesh->boneOffsetMatrices[i];
 					}
 					else {
 						pBoneMesh->currentBoneMatrices[i] = pBoneMesh->boneOffsetMatrices[i];
 					}
 				}
 
-				BYTE *src=NULL, *dst = NULL;
+				BYTE *src = NULL, *dst = NULL;
 				pBoneMesh->MeshData.pMesh->LockVertexBuffer(0, (LPVOID*)&dst);
 				pBoneMesh->originalMesh->LockVertexBuffer(D3DLOCK_READONLY, (LPVOID*)&src);
 				pBoneMesh->pSkinInfo->UpdateSkinnedMesh(pBoneMesh->currentBoneMatrices.data(), NULL, src, dst);
@@ -78,10 +80,13 @@ void cSkinnedModel::Render(Bone* bone)
 			}
 			else {
 				for (size_t i = 0; i < pBoneMesh->NumMaterials; ++i) {
-					g_pD3DDevice->SetTexture(0, pBoneMesh->textures[i]);
-					g_pD3DDevice->SetMaterial(&pBoneMesh->materials[i]);
-					g_pD3DDevice->SetTransform(D3DTS_WORLD, &bone->combinedTransformationMatrix);
-					pBoneMesh->originalMesh->DrawSubset(i);
+					if (pBoneMesh->originalMesh) {
+						g_pD3DDevice->SetTexture(0, pBoneMesh->textures[i]);
+						g_pD3DDevice->SetMaterial(&pBoneMesh->materials[i]);
+						g_pD3DDevice->SetTransform(D3DTS_WORLD, &bone->combinedTransformationMatrix);
+
+						pBoneMesh->originalMesh->DrawSubset(i);
+					}
 				}
 			}
 		}
@@ -113,10 +118,22 @@ bool cSkinnedModel::SetAnimation(int idx)
 	if (!anim) {
 		return false;
 	}
-
+	//LogDebugMessage("Animation %s\n", anim->GetName());
+	//LogDebugMessage("\t Num Anim : %d\n", anim->GetNumAnimations());
+	//LogDebugMessage("\tPeriod : %lf\n", anim->GetPeriod());
+	//int numAnim = anim->GetNumAnimations();
+	//for (int i = 0; i < numAnim; ++i) {
+	//	const char* name;
+	//	anim->GetAnimationNameByIndex(i, &name);
+	//	LogDebugMessage("\t\t%d : %s\n",i, name);
+	//}
+	//LogDebugMessage("\tPeriodPos : %lf\n", anim->GetPeriodicPosition());
 	m_pAnimControl->SetTrackAnimationSet(0, anim);
+	//m_pAnimControl->SetTrackDesc()
+	LPD3DXTRACK_DESC trackDesc;
+	//m_pAnimControl->KeyPriorityBlend()
+	//m_pAnimControl->KeyTrackWeight()
 	anim->Release();
-	LogDebugMessage("Animation %d\n", idx);
 	return true;
 }
 

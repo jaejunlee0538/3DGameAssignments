@@ -56,11 +56,11 @@ void cMainGame::Render()
 	g_pD3DDevice->Clear(NULL,
 		NULL,
 		D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-		D3DCOLOR_XRGB(0, 0, 0),
+		D3DCOLOR_XRGB(0,0,0),
 		1.0f, 0);
 
 	g_pD3DDevice->BeginScene();
-	//m_pGrid->Render();
+	m_pGrid->Render();
 	if (m_pZealot) {
 		m_pZealot->Render();
 		DrawTextAnimationList();
@@ -128,7 +128,7 @@ void cMainGame::InitZealot()
 {
 	SAFE_DELETE(m_pZealot);
 	m_pZealot = new cSkinnedModel();
-	if (!m_pZealot->LoadFromX("Zealot/zealot.X")) {
+	if (!m_pZealot->LoadFromX("JinF.X")) {
 		::MessageBoxA(g_hWnd, "XFile 로드 실패", "로드 에러", MB_OK);
 		SAFE_DELETE(m_pZealot);
 	}
@@ -137,7 +137,7 @@ void cMainGame::InitZealot()
 void cMainGame::InitCamera()
 {
 	m_pCamera = new cCamera;
-	m_pCamera->Setup(D3DXVECTOR3(0,0,0));
+	m_pCamera->Setup(D3DXVECTOR3(0,1.5,0));
 }
 
 void cMainGame::InitGrid()

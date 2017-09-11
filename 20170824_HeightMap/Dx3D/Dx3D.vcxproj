@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0E1212A3-31D5-4481-815B-C481B1D01CA3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Dx3D</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="Dx3D.ico" />
+    <None Include="ReadMe.txt" />
+    <None Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Asciitok.h" />
+    <ClInclude Include="cAllocateHierarchy.h" />
+    <ClInclude Include="cAseLoader.h" />
+    <ClInclude Include="cAutoReleasePool.h" />
+    <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cCrtCtrl.h" />
+    <ClInclude Include="cCube.h" />
+    <ClInclude Include="cDeviceManager.h" />
+    <ClInclude Include="cFrame.h" />
+    <ClInclude Include="cGroup.h" />
+    <ClInclude Include="cKeyManager.h" />
+    <ClInclude Include="cMainGame.h" />
+    <ClInclude Include="cMtlTex.h" />
+    <ClInclude Include="cObject.h" />
+    <ClInclude Include="cObjectPool.h" />
+    <ClInclude Include="cObjLoader.h" />
+    <ClInclude Include="cObjMap.h" />
+    <ClInclude Include="cPyramid.h" />
+    <ClInclude Include="cRay.h" />
+    <ClInclude Include="cSkinnedMesh.h" />
+    <ClInclude Include="cSkinnedMeshManager.h" />
+    <ClInclude Include="cTextureManager.h" />
+    <ClInclude Include="cTimeManager.h" />
+    <ClInclude Include="Dx3D.h" />
+    <ClInclude Include="FreqEstimator.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="HeighMap.h" />
+    <ClInclude Include="iMap.h" />
+    <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="PlayerObject.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TickCounter.h" />
+    <ClInclude Include="ZealotPlayer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cAllocateHierarchy.cpp" />
+    <ClCompile Include="cAseLoader.cpp" />
+    <ClCompile Include="cAutoReleasePool.cpp" />
+    <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cCrtCtrl.cpp" />
+    <ClCompile Include="cCube.cpp" />
+    <ClCompile Include="cDeviceManager.cpp" />
+    <ClCompile Include="cFrame.cpp" />
+    <ClCompile Include="cGroup.cpp" />
+    <ClCompile Include="cKeyManager.cpp" />
+    <ClCompile Include="cMainGame.cpp" />
+    <ClCompile Include="cMtlTex.cpp" />
+    <ClCompile Include="cObject.cpp" />
+    <ClCompile Include="cObjectPool.cpp" />
+    <ClCompile Include="cObjLoader.cpp" />
+    <ClCompile Include="cObjMap.cpp" />
+    <ClCompile Include="cPyramid.cpp" />
+    <ClCompile Include="cRay.cpp" />
+    <ClCompile Include="cSkinnedMesh.cpp" />
+    <ClCompile Include="cSkinnedMeshManager.cpp" />
+    <ClCompile Include="cTextureManager.cpp" />
+    <ClCompile Include="cTimeManager.cpp" />
+    <ClCompile Include="Dx3D.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="HeighMap.cpp" />
+    <ClCompile Include="iMap.cpp" />
+    <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="PlayerObject.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TickCounter.cpp" />
+    <ClCompile Include="ZealotPlayer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Dx3D.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

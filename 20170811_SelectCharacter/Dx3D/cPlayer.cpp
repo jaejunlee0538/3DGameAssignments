@@ -3,6 +3,7 @@
 #include "cFrame.h"
 #include "cAseLoader.h"
 #include "cKeyManager.h"
+#include "ColliderBase.h"
 #define GRAVITY	50.0f
 cPlayer::cPlayer()
 {
@@ -53,5 +54,8 @@ void cPlayer::Render()
 	}
 	else {
 		m_pIdle->RenderMesh();
+	}
+	if (m_pCollider) {
+		m_pCollider->Render();
 	}
 }

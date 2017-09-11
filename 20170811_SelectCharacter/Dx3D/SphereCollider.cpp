@@ -1,14 +1,18 @@
 #include "stdafx.h"
 #include "SphereCollider.h"
 
-
+LPD3DXMESH	SphereCollider::m_pSphere = NULL;
 SphereCollider::SphereCollider(float radius, D3DXVECTOR3 offsetFromParent)
 	:m_radius(radius), m_offsetFromParent(offsetFromParent)
 {
+	if (m_pSphere==NULL) {
+		D3DXCreateSphere(g_pD3DDevice, radius, 10, 10, &m_pSphere, NULL);
+	}
 }
 
 SphereCollider::~SphereCollider()
 {
+	SAFE_RELEASE(m_pSphere);
 }
 
 bool SphereCollider::CheckRayCollision(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir, float * distance) const
@@ -37,4 +41,13 @@ bool SphereCollider::CheckRayCollision(D3DXVECTOR3 rayPos, D3DXVECTOR3 rayDir, f
 	if (distance) //거리가 필요하면 충돌점까지의 거리를 계산해서 반환해준다.
 		*distance = D3DXVec3Length(&(rayDir*t));
 	return true;
+}
+
+void SphereCollider::Render() const
+{
+	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	m_pSphere->DrawSubset(0);
+	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
 }
